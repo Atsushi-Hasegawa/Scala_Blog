@@ -1,0 +1,30 @@
+@(message: String)
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+<!--
+	function keydown() {
+		if (event.keyCode == 116) {
+			event.keyCode = 0;
+			return false;
+		}
+	}
+	document.onkeydown = keydown;
+	-->
+</script>
+</head>
+
+<body>
+	<center>
+		<br> <br> <a href="/">BACK</a><br> <br>
+		<form action="@routes.AddPage.postBlog" method="post">
+			Title<br> <input type="text" size="45" name="title" value=""><br>
+			Body<br>
+			<textarea name="body" cols="40" rows="30" value=""></textarea>
+			<br> <input type="submit">
+		</form>
+		@message
+	</center>
+</body>
+</html>

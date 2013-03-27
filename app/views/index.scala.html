@@ -1,0 +1,21 @@
+@(title: java.util.ArrayList[String], body: java.util.ArrayList[String],
+ids: java.util.ArrayList[Int],number: Int)
+<body>
+	<center>
+		<a href="addpage">CREATE_BLOG</a> <br> <br>
+		<div>
+			@for(i<-0 until ids.size()){<a href="page?id=@(i+1)">@ids.get(i)</a>}
+		</div>
+		<div>
+			@for(i<- 0 until ids.size()){ @if(ids.get(i) == number){@title.get(i)<br>@body.get(i)<br>
+			} } <br>
+		</div>
+		<form action="@routes.Application.postComment" method="post">
+			URL:<br> <input type="text" size="30" name="url" value=""><br>
+			<br> COMMENT:<br>
+			<textarea name="comment" rows="10" cols="30"></textarea>
+			<br> <input type="hidden" name="id" value="@number"> <input
+				type="submit">
+		</form>
+	</center>
+</body>
