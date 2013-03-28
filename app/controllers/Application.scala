@@ -19,19 +19,22 @@ object Application extends Controller {
 	 * @param bodies
 	 * @param ids
 	 */
-	final val blog = new models.BlogComment_BodyDAO()
-	final val str = AddPage
-	final var titles = new ArrayList[String]
-	final var bodies = new ArrayList[String]
-	final var ids = new ArrayList[Int]
+	val blog = new models.BlogComment_BodyDAO()
+	var titles = new ArrayList[String]
+	var bodies = new ArrayList[String]
+	var ids = new ArrayList[Int]
+	
+	def getDBdata() = {
+		titles = blog.getTitles
+		bodies = blog.getBodies
+		ids = blog.getBlog_id
+	}
 
 	/**
 	 * @action html
 	 */
 	def index = Action {
-		titles = blog.getTitles
-		bodies = blog.getBodies
-		ids = blog.getBlog_id
+		getDBdata()
 		Ok(views.html.index(titles, bodies, ids, 1))
 	}
 
@@ -44,9 +47,9 @@ object Application extends Controller {
 		val comment = request.body.asFormUrlEncoded.get("comment").toString()
 		val id = request.body.asFormUrlEncoded.get("id").toString()
 		var message : String = null
-		val split_url = str.split(url)
-		val split_com = str.split(comment)
-		val split_id = str.split(id).toInt
+		val split_url = split(url)
+		val split_com = split(comment)
+		val split_id = split(id).toInt
 		if (split_com.length() != 0) {
 			blog.doInsert(split_url, split_com, split_id)
 		} else {
@@ -56,13 +59,24 @@ object Application extends Controller {
 	}
 
 	/**
+	 * @param data
+	 * @return String
+	 */
+	def split(data : String) : String = {
+
+		var split : String = null
+		var start = data.indexOf("(")
+		var end = data.indexOf(")")
+		split = data.substring(start + 1, end)
+		return split
+	}
+
+	/**
 	 * @param id :Integer
 	 * @action html
 	 */
 	def page(id : Int) = Action {
-		titles = blog.getTitles
-		bodies = blog.getBodies
-		ids = blog.getBlog_id
+		getDBdata()
 		Ok(views.html.index(titles, bodies, ids, id))
 	}
 }
